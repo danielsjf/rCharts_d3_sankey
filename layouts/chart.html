@@ -12,6 +12,7 @@ params.units ? units = " " + params.units : units = "";
 //hard code these now but eventually make available
 var formatNumber = d3.format("0,.0f"),    // zero decimal places
     format = function(d) { return formatNumber(d) + units; },
+	formatbrackets = function(d) { return ' (' + formatNumber(d) + units + ')'; },
     color = d3.scale.category20();
 
 if(params.labelFormat){
@@ -102,7 +103,7 @@ node.append("text")
   .attr("dy", ".35em")
   .attr("text-anchor", "end")
   .attr("transform", null)
-  .text(function (d) { return d.name; })
+  .text(function (d) { return d.name + formatbrackets(d.value); })
 .filter(function (d) { return d.x < params.width / 2; })
   .attr("x", 6 + sankey.nodeWidth())
   .attr("text-anchor", "start");

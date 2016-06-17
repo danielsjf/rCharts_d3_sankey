@@ -13,7 +13,14 @@ params.units ? units = " " + params.units : units = "";
 var formatNumber = d3.format("0,.0f"),    // zero decimal places
     format = function(d) { return formatNumber(d) + units; },
 	formatbrackets = function(d) { return ' (' + formatNumber(d) + units + ')'; },
+	formatvalue,
     color = d3.scale.category20();
+	
+if(params.printValues){
+	formatvalue = function(d) { return formatbrackets(d); };
+}else{
+    formatvalue = function(d) { return ''; };
+}
 
 if(params.labelFormat){
   formatNumber = d3.format(".2%");
@@ -95,7 +102,7 @@ node.append("rect")
   .style("fill", function (d) { return d.color = color(d.name.replace(/ .*/, "")); })
   .style("stroke", function (d) { return d3.rgb(d.color).darker(2); })
 .append("title")
-  .text(function (d) { return d.name + "\n" + format(d.value); });
+  .text(function (d) { return d.name + "\n" + formatvalue(d.value); });
 
 node.append("text")
   .attr("x", -6)
